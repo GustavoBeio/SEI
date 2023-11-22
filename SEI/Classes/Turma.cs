@@ -1,5 +1,8 @@
-﻿using SEI.Classes;
+﻿using MySql.Data.MySqlClient;
+using SEI.Classes;
 using System.Collections.Generic;
+using System.Data;
+using static SEI.Classes.ConnectSEI;
 
 namespace SEI.Classes
 {
@@ -20,7 +23,12 @@ namespace SEI.Classes
 
         public void Criarturma()
         {
-
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "CriarTurma"
+            };
         }
         public void Adicionarprof()
         {
