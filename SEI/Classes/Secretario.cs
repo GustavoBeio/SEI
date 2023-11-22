@@ -109,9 +109,16 @@ namespace SEI.Classes
             command.ExecuteNonQuery();
             command.Connection.Close();
         }
-        public void ExcluirSecretario()
+        public void ExcluirSecretario(int id)
         {
+            IdSecretario = id;
 
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "ExcluirSecretario"
+            };
         }
     }
 }

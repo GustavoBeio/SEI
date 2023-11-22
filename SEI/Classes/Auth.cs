@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 using static BCrypt.Net.BCrypt;
 using static SEI.Classes.ConnectSEI;
