@@ -49,7 +49,7 @@ namespace SEI.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Aluno não encontrado");
+                    Console.WriteLine("Secretario não encontrado");
                     command.Connection.Close();
                     return null;
                 }
@@ -109,16 +109,19 @@ namespace SEI.Classes
             command.ExecuteNonQuery();
             command.Connection.Close();
         }
-        public void ExcluirSecretario(int id)
+        public void ExcluirSecretario(int ID)
         {
-            IdSecretario = id;
-
+            IdSecretario = ID;
             MySqlCommand command = new()
             {
                 Connection = ConnectToDB(),
                 CommandType = CommandType.StoredProcedure,
                 CommandText = "ExcluirSecretario"
             };
+
+            command.Parameters.AddWithValue("@p_ID_Secretario", IdSecretario);
+            command.ExecuteNonQuery();
+            command.Connection.Close();
         }
     }
 }
