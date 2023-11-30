@@ -48,6 +48,14 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Google.Cloud.Storage.V1": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
             "MySql.Data": {
               "target": "Package",
               "version": "[8.1.0, )"
