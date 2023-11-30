@@ -9,16 +9,42 @@ namespace SEI.Classes
 {
     public class Secretario : Pessoa
     {
-        public string CPFSecretario { get; set; } = "00011122233";
-        public string CargoSecretario { get; set; } = "cargo";
-        public string TelSecretario { get; set; } = "telefone";
+        public string CPFSecretario { get; set; } = "";
+        public string CargoSecretario { get; set; } = "";
+        public string TelSecretario { get; set; } = "";
         public int IdSecretario { get; set; }
 
-        public void CadastrarSecretario()
+        public void CadastrarSecretario(Secretario secretario)
         {
-            Console.WriteLine("professor cadastrado");
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "CadastrarSecretario"
+            };
+
+            var encryptedPassword = EncryptPass(secretario.Password);
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_Nome_Secretario", secretario.Nome},
+                {"@p_Cargo_Secretario", secretario.CargoSecretario},
+                {"@p_CPF_Secretario", secretario.CPFSecretario},
+                {"@p_Registro_Geral_Secretario", secretario.RegistroGeral},
+                {"@p_Telefone_Secretario", secretario.TelSecretario},
+                {"@p_Login_Name_Secretario", secretario.Login},
+                {"@p_Senha_Secretario", encryptedPassword.PasswordHash},
+                {"@p_Salt_Secretario", encryptedPassword.PasswordSalt}
+            };
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+            command.ExecuteNonQuery();
+            command.Connection.Close();
+            Console.WriteLine("secretario cadastrado");
         }
-        public Secretario? BuscarSecretario(string CPF)
+        public Secretario? BuscarSecretario(int id)
         {
             try
             {
@@ -28,8 +54,8 @@ namespace SEI.Classes
                     CommandType = CommandType.StoredProcedure,
                     CommandText = "BuscarSecretario"
                 };
-                CPFSecretario = CPF;
-                command.Parameters.AddWithValue("@p_CPF_Secretario", CPFSecretario);
+                IdSecretario = id;
+                command.Parameters.AddWithValue("@p_ID_Secretario", IdSecretario);
 
                 using MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
@@ -58,7 +84,7 @@ namespace SEI.Classes
             {
                 Console.WriteLine(ex.GetType().FullName);
                 Console.WriteLine(ex.Message);
-                throw ex;
+                throw;
             }
         }
         public void EditarSecretatio(
@@ -83,22 +109,20 @@ namespace SEI.Classes
 
             Dictionary<string, object> parametros = new()
             {
-                { "@p_Matricula", IdSecretario},
-                { "@p_Nome_Aluno", Nome },
-                { "@p_Sobrenome_Aluno", Sobrenome },
-                { "@p_Login_Name_ALuno", Login },
-                { "@p_Genero_Aluno", Gender },
-                { "@p_Data_Nascimento_Aluno", DataNasc },
-                { "@p_Endereco", Endereco },
-                { "@p_Registro_Geral_Aluno", RegistroGeral },
-                { "@p_Email_Aluno", Email }
+                { "@p_ID_Secretario", IdSecretario},
+                { "@p_Nome_Secretario", Nome },
+                { "@p_Cargo_Secretario", CargoSecretario },
+                { "@p_CPF_Secretario", CPFSecretario },
+                { "@p_Registro_Geral_Secretario", RegistroGeral },
+                { "@p_Telefone_Secretario", TelSecretario },
+                { "@p_Login_Name_Secretario", Login }
             };
 
             MySqlCommand command = new()
             {
                 Connection = ConnectToDB(),
                 CommandType = CommandType.StoredProcedure,
-                CommandText = "AtualizarAluno"
+                CommandText = "AtualizarSecretario"
             };
 
             foreach (var parametro in parametros)

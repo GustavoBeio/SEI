@@ -105,7 +105,7 @@ namespace SEI.Classes
             {
                 Console.WriteLine(ex.GetType().FullName);
                 Console.WriteLine(ex.Message);
-                throw ex;
+                throw;
             }
         }
 

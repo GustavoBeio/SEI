@@ -104,15 +104,7 @@ namespace SEI.Classes
 
         public void AdicionarAluno(string alunoid, int turmaid)
         {
-            Aluno aluno = new()
-            {
-                Matricula = alunoid
-            };
-            if(Buscarturma(turmaid) == null)
-            {
-                
-            }
-            else
+            if(Buscarturma(turmaid) != null)
             {
                 MySqlCommand command = new()
                 {
@@ -131,6 +123,10 @@ namespace SEI.Classes
                 }
                 command.ExecuteNonQuery();
                 command.Connection.Close();
+            }
+            else
+            {
+                
             }
         }
     }
