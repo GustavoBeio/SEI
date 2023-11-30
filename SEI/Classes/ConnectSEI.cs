@@ -21,7 +21,7 @@ namespace SEI.Classes
         {
             try
             {
-                using MySqlConnection con = new(@"server=104.154.22.111;userid=root;password=tccunip;database=sei-1");
+                using MySqlConnection con = new(@"server=104.154.22.111;userid=root;password=tccunip;database=SEI_DB");
                 con.Open();
 
                 Console.WriteLine("sql connectado");

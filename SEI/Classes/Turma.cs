@@ -126,7 +126,7 @@ namespace SEI.Classes
             }
             else
             {
-                
+                Console.Write("Não encontrado a turma");
             }
         }
     }

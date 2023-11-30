@@ -200,7 +200,7 @@ namespace SEI.Classes
                 CommandType = CommandType.StoredProcedure,
                 CommandText = "ExcluirAluno"
             };
-            command.Parameters.AddWithValue ("@p_Matricula", mat);
+            command.Parameters.AddWithValue("@p_Matricula", mat);
             command.ExecuteNonQuery();
         }
 
@@ -250,15 +250,79 @@ namespace SEI.Classes
             command.ExecuteNonQuery();
             command.Connection.Close();
         }
-
-        public void MontarBoletim(string mat)
+        public void AtribuirFalta(string mat, int id)
         {
             MySqlCommand command = new()
             {
                 Connection = ConnectToDB(),
                 CommandType = CommandType.StoredProcedure,
-                CommandText = "AtribuirNota"
+                CommandText = "AtribuirFalta"
             };
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_Matricula_Aluno", mat},
+                {"@p_ID_Disciplina", id},
+                {"@p_Faltas", 1 }
+            };
+
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+            command.ExecuteNonQuery();
+            command.Connection.Close();
+        }
+
+        public void RemoverFalta(string mat, int id)
+        {
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "RemoverFalta"
+            };
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_Matricula_Aluno", mat},
+                {"@p_ID_Disciplina", id},
+                {"@p_Faltas", -1 }
+            };
+
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+            command.ExecuteNonQuery();
+            command.Connection.Close();
+        }
+
+        public DataTable MontarBoletim(string mat)
+        {
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "ObterBoletim"
+            };
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_Matricula_Aluno", mat},
+            };
+
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+
+            using (MySqlDataAdapter da = new MySqlDataAdapter(command))
+            {
+                var dataTable = new DataTable();
+                da.Fill(dataTable);
+                return dataTable;
+            }
         }
     }
 }
