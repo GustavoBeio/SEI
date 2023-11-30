@@ -203,5 +203,62 @@ namespace SEI.Classes
             command.Parameters.AddWithValue ("@p_Matricula", mat);
             command.ExecuteNonQuery();
         }
+
+        public void AtribuirNota(string mat, int id, double nota)
+        {
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "AtribuirNota"
+            };
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_Matricula_Aluno", mat },
+                {"@p_ID_Disciplina", id},
+                {"@p_Nota", nota}
+            };
+
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+            command.ExecuteNonQuery();
+            command.Connection.Close();
+        }
+
+        public void AlterarNota(int id, double nota)
+        {
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "AtribuirNota"
+            };
+
+            Dictionary<string, object> parametros = new()
+            {
+                {"@p_ID_Nota", id},
+                {"@p_Nota", nota}
+            };
+
+            foreach (var parametro in parametros)
+            {
+                command.Parameters.AddWithValue(parametro.Key, parametro.Value);
+            }
+            command.ExecuteNonQuery();
+            command.Connection.Close();
+        }
+
+        public void MontarBoletim(string mat)
+        {
+            MySqlCommand command = new()
+            {
+                Connection = ConnectToDB(),
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "AtribuirNota"
+            };
+        }
     }
 }
